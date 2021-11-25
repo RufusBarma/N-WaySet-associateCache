@@ -25,14 +25,29 @@ namespace N_WaySet_associateCache.Cache
                 _sets.Add(new SetCache<TKey, TValue>(evictionPolicy, waysCount));
         }
 
-        public void Add(TKey key, TValue value) => GetSet(key).Add(key, value);
+        public void Add(TKey key, TValue value)
+        {
+            GetSet(key).Add(key, value);
+        }
 
-        public Option<TValue> Get(TKey key) => GetSet(key).Get(key);
+        public Option<TValue> Get(TKey key)
+        {
+            return GetSet(key).Get(key);
+        }
 
-        public void Remove(TKey key) => GetSet(key).Remove(key);
+        public void Remove(TKey key)
+        {
+            GetSet(key).Remove(key);
+        }
 
-        public bool Contain(TKey key) => GetSet(key).Contain(key);
+        public bool Contain(TKey key)
+        {
+            return GetSet(key).Contain(key);
+        }
 
-        private SetCache<TKey, TValue> GetSet(TKey key) => _sets[Math.Abs(key.GetHashCode() % _setsCount)];
+        private SetCache<TKey, TValue> GetSet(TKey key)
+        {
+            return _sets[Math.Abs(key.GetHashCode() % _setsCount)];
+        }
     }
 }

@@ -8,8 +8,8 @@ namespace N_WaySet_associateCache.Cache
     public class SetCache<TKey, TValue> : ICache<TKey, TValue>
     {
         private readonly IEvictionPolicy<TKey> _evictionPolicy;
-        private readonly int _waysCount;
         private readonly Dictionary<TKey, TValue> _vault;
+        private readonly int _waysCount;
         private int _keysCount;
 
         public SetCache(IEvictionPolicy<TKey> evictionPolicy, int waysCount)
@@ -22,22 +22,14 @@ namespace N_WaySet_associateCache.Cache
             _vault = new Dictionary<TKey, TValue>(waysCount);
         }
 
-        private void Evict()
-        {
-            _evictionPolicy.GetKeyToEvict().IfSome(keyToEvict =>
-            {
-                _vault.Remove(keyToEvict);
-                _evictionPolicy.Remove(keyToEvict);
-                _keysCount--;
-            });
-        }
-
         public void Add(TKey key, TValue value)
         {
             if (_keysCount > _waysCount)
                 throw new OverflowException("Set cache overflow");
             if (_vault.ContainsKey(key))
+            {
                 _vault[key] = value;
+            }
             else
             {
                 if (_keysCount == _waysCount) Evict();
@@ -68,6 +60,16 @@ namespace N_WaySet_associateCache.Cache
         public bool Contain(TKey key)
         {
             return _vault.ContainsKey(key);
+        }
+
+        private void Evict()
+        {
+            _evictionPolicy.GetKeyToEvict().IfSome(keyToEvict =>
+            {
+                _vault.Remove(keyToEvict);
+                _evictionPolicy.Remove(keyToEvict);
+                _keysCount--;
+            });
         }
     }
 }
