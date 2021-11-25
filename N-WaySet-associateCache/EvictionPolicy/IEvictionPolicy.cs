@@ -1,3 +1,5 @@
+using LanguageExt;
+
 namespace N_WaySet_associateCache.EvictionPolicy
 {
     public interface IEvictionPolicy<TKey>
@@ -5,6 +7,6 @@ namespace N_WaySet_associateCache.EvictionPolicy
         public void Add(TKey key);
         public void Get(TKey key);
         public void Remove(TKey key);
-        public TKey GetKeyToEvict();
+        public Option<TKey> GetKeyToEvict();
     }
 }

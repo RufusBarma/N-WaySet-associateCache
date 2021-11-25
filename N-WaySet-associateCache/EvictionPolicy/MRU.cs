@@ -1,3 +1,5 @@
+using LanguageExt;
+
 namespace N_WaySet_associateCache.EvictionPolicy
 {
     public class MRU<TKey> : IEvictionPolicy<TKey>
@@ -17,7 +19,7 @@ namespace N_WaySet_associateCache.EvictionPolicy
             throw new System.NotImplementedException();
         }
 
-        public TKey GetKeyToEvict()
+        public Option<TKey> GetKeyToEvict()
         {
             throw new System.NotImplementedException();
         }

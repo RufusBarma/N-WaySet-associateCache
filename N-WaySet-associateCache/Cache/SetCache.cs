@@ -24,10 +24,11 @@ namespace N_WaySet_associateCache.Cache
 
         private void Evict()
         {
-            var keyToEvict = _evictionPolicy.GetKeyToEvict();
-            if (keyToEvict == null) return;
-            _vault.Remove(keyToEvict);
-            _keysCount--;
+            _evictionPolicy.GetKeyToEvict().IfSome(keyToEvict =>
+            {
+                _vault.Remove(keyToEvict);
+                _keysCount--;
+            });
         }
 
         public void Add(TKey key, TValue value)
