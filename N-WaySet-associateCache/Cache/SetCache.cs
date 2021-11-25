@@ -27,6 +27,7 @@ namespace N_WaySet_associateCache.Cache
             _evictionPolicy.GetKeyToEvict().IfSome(keyToEvict =>
             {
                 _vault.Remove(keyToEvict);
+                _evictionPolicy.Remove(keyToEvict);
                 _keysCount--;
             });
         }
@@ -35,11 +36,11 @@ namespace N_WaySet_associateCache.Cache
         {
             if (_keysCount > _waysCount)
                 throw new OverflowException("Set cache overflow");
-            if (_keysCount == _waysCount) Evict();
             if (_vault.ContainsKey(key))
                 _vault[key] = value;
             else
             {
+                if (_keysCount == _waysCount) Evict();
                 _vault.Add(key, value);
                 _keysCount++;
             }

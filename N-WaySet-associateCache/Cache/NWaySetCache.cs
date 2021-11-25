@@ -22,7 +22,7 @@ namespace N_WaySet_associateCache.Cache
 
             _sets = new List<SetCache<TKey, TValue>>(_setsCount);
             for (var i = 0; i < _setsCount; i++)
-                _sets[i] = new SetCache<TKey, TValue>(evictionPolicy, waysCount);
+                _sets.Add(new SetCache<TKey, TValue>(evictionPolicy, waysCount));
         }
 
         public void Add(TKey key, TValue value) => GetSet(key).Add(key, value);
@@ -33,6 +33,6 @@ namespace N_WaySet_associateCache.Cache
 
         public bool Contain(TKey key) => GetSet(key).Contain(key);
 
-        private SetCache<TKey, TValue> GetSet(TKey key) => _sets[key.GetHashCode() % _setsCount];
+        private SetCache<TKey, TValue> GetSet(TKey key) => _sets[Math.Abs(key.GetHashCode() % _setsCount)];
     }
 }
